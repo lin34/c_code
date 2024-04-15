@@ -1,15 +1,10 @@
-/*
-A semaphore is an unsigned integer used to coordinate two threads
-It is a synchronization primative. It's operations are atomic.
-The main two operations are {wait() , decrement} and {post ,inc}
-*/
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/sem.h>
-#include <semaphore.h>
+
 #include "shared_memory.h"
 
-#define NUM_ITERATIONS 10
+#define BLOCK_SIZE 4096
 
 int main(int argc, char *argv[])
 {
@@ -27,5 +22,10 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    print
+    printf("Writing: \"%s\"\n", argv[1]);
+    strncpy(block, argv[1], BLOCK_SIZE);
+
+    detach_memory_block(block);
+
+    return 0;
 }

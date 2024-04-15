@@ -39,6 +39,7 @@ int main()
     pthread_join(myThread1, NULL); // Second arg is the attributes
     // Thread2 returns a int *, and we want a pointer to this
     //  passes a reference to a pointer to pthread_join
+    // copies the return value of the thread into memory
     pthread_join(myThread2, (void *)&iptr);
     printf("final value myTurn %d\n", x);
     printf("final value yourTurn %d\n", *iptr);

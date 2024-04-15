@@ -17,3 +17,5 @@ debug: debugging.c
 
 volatile: volatile.c
 	clang -O2 withthreads.c
+clean:
+	rm -rf 
