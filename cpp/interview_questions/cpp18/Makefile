@@ -1,7 +1,7 @@
 CC = g++
 CFLAGS = -g -Wall
 
-all: sliding_window binary_search_tree multiple_choice_test
+all: sliding_window binary_search_tree inheritance playlist multiple_choice
 
 sliding_window: sliding_window.cpp
 	$(CC) $(CFLAGS) -o $@ $^
@@ -9,5 +9,11 @@ sliding_window: sliding_window.cpp
 binary_search_tree: binary_search_tree.cpp
 	$(CC) $(CFLAGS) -o $@ $^
 
-multiple_choice_test: multiple_choice_test.cpp
+inheritance: inheritance.cpp
+	$(CC) $(CFLAGS) -o $@ $^
+
+playlist: playlist.cpp
+	$(CC) $(CFLAGS) -o $@ $^
+
+multiple_choice: multiple_choice.cpp
 	$(CC) $(CFLAGS) -o $@ $^
