@@ -1,0 +1,32 @@
+Question 2 of 6
+
+Customers and their orders are stored in the following two tables:
+
+TABLE customers
+
+id INTEGER PRIMARY KEY NOT NULL
+
+name VARCHAR(50)
+
+balance DECIMAL (10,2)
+
+TABLE orders
+
+id INTEGER PRIMARY KEY NOT NULL
+
+customerId INTEGER NOT NULL
+
+product VARCHAR(100)
+
+FOREIGN KEY (customerId) REFERENCES customers(id)
+
+Using a sub-query, delete the orders of any customer whose balance is negative.
+
+
+Answer
+DELETE FROM orders
+WHERE customerId IN (
+    SELECT id
+    FROM customers
+    WHERE balance < 0
+);

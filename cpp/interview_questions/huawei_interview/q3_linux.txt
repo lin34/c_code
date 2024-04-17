@@ -1,0 +1,37 @@
+See the example case for more details.
+Select the statements about file permissions and chmod that are correct.
+
+(Select all acceptable answers.)
+
+1. The symbolic notation r-xrw-r-- can be represented with the octal notation 564.
+True --> verified (got wrong)
+2. If a file has the permission string r-xrw-r--, all users are able to read and execute the file, but only the file owner can write to it.
+False -->verified (chatgpt got wrong)
+3. File permissions have three sets of permissions for three types of user, the owner, the group, and other users.
+True --verified
+4. The octal notation 755 cgie be represented as with the symbolic notation r-xrwxrwx.
+false -- verified
+5. chmod a+w <filename> can be used to give all users permission to write to a file.
+true --verified
+80% correct
+Answer:
+
+
+Let's evaluate each statement:
+
+    The symbolic notation r-xrw-r-- can be represented with the octal notation 564.
+        False. The symbolic notation r-xrw-r-- corresponds to octal notation 654. The correct octal notation for r-xrw-r-- is 654.
+
+    If a file has the permission string r-xrw-r--, all users are able to read and execute the file, but only the file owner can write to it.
+        True. In the permission string r-xrw-r--, the owner has read and execute permissions (r-x), the group has read and write permissions (rw-), and other users have only read permission (r--). So, only the file owner (rwx) can write to the file.
+
+    File permissions have three sets of permissions for three types of user, the owner, the group, and other users.
+        True. File permissions consist of three sets: owner permissions, group permissions, and other (or world) permissions.
+
+    The octal notation 755 can be represented with the symbolic notation r-xrwxrwx.
+        False. The octal notation 755 corresponds to the symbolic notation rwxr-xr-x. The correct symbolic notation for 755 is rwxr-xr-x.
+
+    chmod a+w <filename> can be used to give all users permission to write to a file.
+        True. chmod a+w <filename> adds write (w) permission for all (a) users on the specified file.
+
+So, the correct statements are 2, 3, and 5.
