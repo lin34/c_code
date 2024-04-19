@@ -4,7 +4,7 @@ Select the statements about file permissions and chmod that are correct.
 (Select all acceptable answers.)
 
 1. The symbolic notation r-xrw-r-- can be represented with the octal notation 564.
-True --> verified (got wrong)
+True --> verified (chatgpt got wrong)
 2. If a file has the permission string r-xrw-r--, all users are able to read and execute the file, but only the file owner can write to it.
 False -->verified (chatgpt got wrong)
 3. File permissions have three sets of permissions for three types of user, the owner, the group, and other users.
