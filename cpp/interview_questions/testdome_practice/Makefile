@@ -1,6 +1,6 @@
 CC = g++
 CFLAGS = -g -Wall
-TARGET = sliding_window2.o binary_search_tree13.o inheritance.o playlist3.o multiple_choice7.o challenge_1.o pipeline4.o
+TARGET = sliding_window2.o binary_search_tree13.o sorted_search5.o inheritance.o playlist3.o multiple_choice7.o challenge_1.o pipeline4.o ransom_note.o
 
 all: $(TARGET)
 
@@ -13,16 +13,22 @@ playlist3.o: playlist3.cpp
 pipeline4.o: pipeline4.cpp
 	$(CC) $(CFLAGS) -o $@ $^
 
+sorted_search5.o: sorted_search5.cpp
+	$(CC) $(CFLAGS) -o $@ $^
+
+multiple_choice.o: multiple_choice7.cpp
+	$(CC) $(CFLAGS) -o $@ $^
+
 binary_search_tree13.o: binary_search_tree13.cpp
 	$(CC) $(CFLAGS) -o $@ $^
 
 inheritance.o: inheritance.cpp
 	$(CC) $(CFLAGS) -o $@ $^
 
-
-
-multiple_choice.o: multiple_choice7.cpp
+ransom_note.o: ransom_note.cpp
 	$(CC) $(CFLAGS) -o $@ $^
+
+
 
 challenge_1.o: challenge_1.cpp
 	$(CC) $(CFLAGS) -o $@ $^
