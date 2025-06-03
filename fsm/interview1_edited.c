@@ -9,56 +9,39 @@
 //    Macro should work for integer or floating point types
 //    Note: degF = degC * (9/5) + 32
 // Answer: TODO
-#define C_TO_F(degC) (degC * (9/5) + 32)
+#define C_TO_F(degC) (degC * (9 / 5) + 32)
 
 ////////////////////////////////////////////////////////////////////////////////
 // 2) Function Debug (5 points)
-// The following function should compute and return the square of the value 
+// The following function should compute and return the square of the value
 // pointed to by x.  Correct any mistakes in the implementation.
 
 uint16_t computeSquareADC(volatile uint8_t *x)
 {
-    uint16_t retval = (*x) * (*x);
-    return retval;
+  uint16_t val = (uint16_t)(*x);
+  return val * val;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // 3) Bit Manipulation (10 points)
 //    Write a function that swaps the highest bits in each nibble of the byte
 //    pointed to by the pointer b. (e.g., bits: 1 _ _ _ 0 _ _ _ -> 0 _ _ _ 1 _ _ _)
 //    The bits designated by '_' in the example above should not be swapped.
- 
-void swapBits(uint8_t* b)
-{
-    // Answer: TODO
-    //one byte is 2 nibbles 1000 0001 --> 0000 1001 or 129 to 9
-    //use bit masking
-    uint8_t nib1_high = 0xB0;
-    uint8_t nib2_high = 0x8;
-    //get the values of the bits
-    //1000 0000 the msb is set
-    bool msb1_set = *b & nib1_high;
-    bool msb2_set = *b & nib2_high;
-    //set using bitwise or
-    if(msb1_set)
-    {
-      *b = (*b | (1 << (3)));
-    }
-    else {
-      *b = (*b & (~(1 << 3)));
-    }
-    //0000 1000 is set
-    if(msb2_set)
-    {
-      *b = (*b | (1 << (7)));
-    }
-    else {
-      *b = (*b & (~(1 << 7)));
-    }
 
+void swapBits(uint8_t *b)
+{
+  // Extract bit 7 and bit 3
+  uint8_t bit7 = (*b >> 7) & 0x01;
+  uint8_t bit3 = (*b >> 3) & 0x01;
+
+  // Clear original bit 7 and bit 3
+  *b &= ~(1 << 7); // clear bit 7
+  *b &= ~(1 << 3); // clear bit 3
+
+  // Set new swapped values
+  *b |= (bit3 << 7);
+  *b |= (bit7 << 3);
 }
- 
 
 ////////////////////////////////////////////////////////////////////////////////
 // 4) State Machine (20 points)
@@ -75,7 +58,7 @@ void swapBits(uint8_t* b)
 //
 //          COIN      +---------+
 //   +--------------->|         |   BUTTON
-//   |                |  READY  | ---------+       
+//   |                |  READY  | ---------+
 //   |    COIN_RETURN |         |          |
 //   |   +----------- +---------+          |
 //   |   |                                 |
@@ -92,29 +75,29 @@ void swapBits(uint8_t* b)
 //             +------------------>|         |
 //                                 +---------+
 //
- 
+
 typedef enum
 {
-    IDLE,
-    READY,
-    VENDING,
-    FAULT
+  IDLE,
+  READY,
+  VENDING,
+  FAULT
 } state_E;
- 
+
 state_E state = IDLE;
 
 typedef enum
 {
-    COIN,
-    COIN_RETURN,
-    BUTTON,
-    VEND_COMPLETE,
-    GENERIC_FAULT
+  COIN,
+  COIN_RETURN,
+  BUTTON,
+  VEND_COMPLETE,
+  GENERIC_FAULT
 } input_E;
- 
+
 void idleStateHandler(input_E input)
 {
-  if(input == COIN)
+  if (input == COIN)
   {
     state = READY;
   }
@@ -122,16 +105,15 @@ void idleStateHandler(input_E input)
   {
     state = FAULT;
   }
-    
 }
 
 void readyStateHandler(input_E input)
 {
-  if(input == BUTTON)
+  if (input == BUTTON)
   {
     state = VENDING;
   }
-  else if(input ==COIN_RETURN)
+  else if (input == COIN_RETURN)
   {
     state = IDLE;
   }
@@ -143,7 +125,7 @@ void readyStateHandler(input_E input)
 
 void vendingStateHandler(input_E input)
 {
-  if(input == VEND_COMPLETE)
+  if (input == VEND_COMPLETE)
   {
     state = IDLE;
   }
@@ -155,24 +137,21 @@ void vendingStateHandler(input_E input)
 
 state_E updateStateMachine(input_E input)
 {
-    if(state == IDLE)
-    {
-      idleStateHandler(input);
-    }
-    else if(state == READY)
-    {
-      readyStateHandler(input);
-    }
-    else if(state == VENDING)
-    {
-      vendingStateHandler(input);
-    }
+  if (state == IDLE)
+  {
+    idleStateHandler(input);
+  }
+  else if (state == READY)
+  {
+    readyStateHandler(input);
+  }
+  else if (state == VENDING)
+  {
+    vendingStateHandler(input);
+  }
 
-    return state;
+  return state;
 }
-
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // 5) Interpolation (20 points)
@@ -199,36 +178,77 @@ state_E updateStateMachine(input_E input)
 //           |  / |       |     |
 //           |/___|_______|_____|______
 //            arrX[i-1]  val   arrX[i]
- 
-//#define ARR_SIZE () //Fill this out
-//float arrX[ARR_SIZE] = {};
-//float arrY[ARR_SIZE] = {};
+
+#define ARR_SIZE (5) // Fill this out
+float arrX[ARR_SIZE] = {0, 1, 2, 3, 4};
+float arrY[ARR_SIZE] = {0, 2, 4, 8, 16};
 float interpolate(float val)
 {
-    // Answer: TODO
-    return 0.0f;
-    
+  if ((val < arrX[0]) || (val > arrX[ARR_SIZE - 1]))
+  {
+    return -1;
+  }
+  // val must exist within arrX
+  // Find which interval it exists in
+  int low_ind = 0;
+  for (int i = 0; i < ARR_SIZE - 1; i++)
+  {
+    if (val == arrX[i])
+    {
+      return arrY[i];
+    }
+    low_ind = i;
+    if ((val >= arrX[i]) && val < arrX[i + 1])
+    {
+      break;
+    }
+  }
+  // interpolate between
+  float m = (arrY[low_ind + 1] - arrY[low_ind]) / (arrX[low_ind + 1] - arrX[low_ind]);
+  float deltaX = val - arrX[low_ind];
+  return arrY[low_ind] + m * deltaX;
 }
- 
+
 int main()
 {
-    // Usage Examples
+  // Usage Examples
 
-    // Q1
-    // printf("Q1 Usage Example: %s\n", (C_TO_F(0) == 32) ? "PASS" : "FAIL");
-    printf("Q1 Usage Example: %s\n", (C_TO_F(0) == 32) ? "PASS" : "FAIL");
-    printf("Q1 Usage Example: %f\n", (C_TO_F(5.5)));
-    int x = 20;
-    printf("Q2 Usage Example: %d\n", computeSquareADC(&x));
-    int y = 129;
-    swapBits(&y);
-    printf("Q2 Usage Example: %d\n", y);
-    // Q4
-    // printf("Q4 Usage Example: %s\n", (updateStateMachine(COIN) == READY) ? "PASS" : "FAIL");
+  // Q1
+  // printf("Q1 Usage Example: %s\n", (C_TO_F(0) == 32) ? "PASS" : "FAIL");
+  printf("Q1 Usage Example: %s\n", (C_TO_F(0) == 32) ? "PASS" : "FAIL");
+  printf("Q1 Usage Example: %f\n", (C_TO_F(5.5)));
+  uint8_t x = 20;
+  printf("Q2 Usage Example: %d\n", computeSquareADC(&x));
+  uint8_t test1 = 0b10000000; // bit 7 set
+  uint8_t test2 = 0b00001000; // bit 3 set
+  uint8_t test3 = 0b10001000; // both bits set
+  uint8_t test4 = 0b00000000; // neither set
+  uint8_t test5 = 0b11110111; // all bits set
 
+  swapBits(&test1);
+  printf("Question 3 Test1: 0x%02X\n", test1); // Expect 0x08
+  swapBits(&test2);
+  printf("Question 3 Test2: 0x%02X\n", test2); // Expect 0x80
+  swapBits(&test3);
+  printf("Question 3 Test3: 0x%02X\n", test3); // Expect 0x88 (no change)
+  swapBits(&test4);
+  printf("Question 3 Test4: 0x%02X\n", test4); // Expect 0x00
+  swapBits(&test5);
+  printf("Question 3 Test5: %s\n", test5 == 0x7F ? "PASS" : "FAIL"); // Expect 0x7F (bits 7 and 3 swapped)
+  // Q4
+  // printf("Q4 Usage Example: %s\n", (updateStateMachine(COIN) == READY) ? "PASS" : "FAIL");
 
-    state = IDLE;
-    printf("Q4 Usage Example: %s\n", (updateStateMachine(COIN) == READY) ? "PASS" : "FAIL");
-    printf("Q4 Usage Example: %s\n", (updateStateMachine(BUTTON) == VENDING) ? "PASS" : "FAIL");
-     return 0;
+  state = IDLE;
+  printf("Q4 Usage Example: %s\n", (updateStateMachine(COIN) == READY) ? "PASS" : "FAIL");
+  printf("Q4 Usage Example: %s\n", (updateStateMachine(BUTTON) == VENDING) ? "PASS" : "FAIL");
+  float tests[] = {-1, 0, 0.5, 1, 1.5, 2, 2.5, 3.5, 4, 5};
+  int n_tests = sizeof(tests) / sizeof(tests[0]);
+
+  for (int i = 0; i < n_tests; i++)
+  {
+    float input = tests[i];
+    float result = interpolate(input);
+    printf("Question 5 interpolate(%.2f) = %.2f\n", input, result);
+  }
+  return 0;
 }
