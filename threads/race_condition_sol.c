@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <pthread.h>
 
-#define BIG 1000000000UL
+#define BIG 1000000UL
 uint32_t counter = 0;
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
